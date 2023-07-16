@@ -1,9 +1,9 @@
 USE employee_db;
 
 INSERT INTO departments (name) 
-    VALUES ('Customer Service'), ('Marketing');
+    VALUES ('Engineering'), ('Finance');
 INSERT INTO roles (title, salary) 
-    VALUES ('Receptionist', 60000), ('Tele-Marketer', 70000);
+    VALUES ('Software Engineer', 120000), ('Account Manager', 160000);
 INSERT INTO employees (first_name, last_name) 
     VALUES ('John', 'Smith'), ('Henry', 'Wesker'), ('James', 'Baker');
 
