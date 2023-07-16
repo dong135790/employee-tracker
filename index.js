@@ -36,20 +36,30 @@ const insertDepartment = (data) => {
         if (err) {
             return console.error(err);
         }
-        console.log('Added ______ to the database')
+        console.log('Added ______ to the database');
         init();
     })
 }
+
 const insertRole = (data) => {
     db.query('INSERT INTO roles SET ?', data, (err, result) => {
         if (err) {
             return console.error(err);
         }
-        console.log('Added ______ to roles')
+        console.log('Added ______ to roles');
         init();
     })
 }
-
+const updateEmployee = (data) => {
+    // add sql in here
+    db.query('', data, (err, result) => {
+        if (err) {
+            return console.error(err);
+        }
+        console.log('Added Selected Employee to the Database!');
+        init();
+    })
+}
 
 const handleAction = ({ action }) => {
     console.log(`Action: ${action}`);
@@ -68,24 +78,11 @@ const handleAction = ({ action }) => {
         }
         case 'View All Departments': {
             getTable('departments');
-            // db.query('SELECT * FROM departments', (err, departments) => {
-                // if (err) {
-                //     return console.error(err);
-                // }
-            //     console.table(departments);
-            //     init();
-            // });
+            // Need breaks or you wont be able to interact with prompt inputs.
             break;
         }
         case 'View All Roles': {
             getTable('roles');
-            // db.query('SELECT * FROM roles', (err, roles) => {
-                // if (err) {
-                //     return console.error(err);
-                // }
-            //     console.table(roles);
-            //     init();
-            // });
             break;
         }
         case 'Add Employee': {
@@ -98,8 +95,17 @@ const handleAction = ({ action }) => {
                     name: 'last_name',
                     message: 'Enter your last name:'
                 },
+                {
+                    name: 'role_id',
+                    message: 'What is the employee role?',
+                    // TODO
+                },
+                {
+                    name: 'manager_id',
+                    message: 'Who is the employees manager?',
+                    // TODO
+                },
             ]).then(insertEmployee);
-            // Need breaks or you wont be able to interact with prompt inputs.
             break;
         }
         case 'Add Department': {
@@ -108,7 +114,7 @@ const handleAction = ({ action }) => {
                     name: 'name',
                     message: 'What is the name of the department?'
                 },
-            ]).then(insertDepartment)
+            ]).then(insertDepartment);
             break;
         }
         case 'Add Role': {
@@ -121,15 +127,40 @@ const handleAction = ({ action }) => {
                     name: 'salary',
                     message: 'What is the salary of the role? (Please enter numbers only (no commas))'
                 },
-            ]).then(insertRole)
+                {
+                    name: 'department_id',
+                    message: 'Which department does the role belong to?',
+                    // 
+                    choices: [
+                        'Service',
+                        'Sales',
+                        'Engineering',
+                        'Finance',
+                        'Legal',
+                        'Other'
+                    ]
+                }
+            ]).then(insertRole);
             break;
+        }
+        case 'Update Employee Role': {
+            prompt([
+                {
+                    name: 'update',
+                    message: 'Which employees role do you want to update?',
+                    // TODO add the names of the employees that you wish to update
+                    choices: [
+                        
+                    ]
+                }
+            ]).then(updateEmployee);
         }
         // Add a way to get out of init()/prompt system or it will keep asking you questions.
         default: {
             process.exit();
-        }
-    }
-}
+        };
+    };
+};
 
 const init = () => {
     prompt({

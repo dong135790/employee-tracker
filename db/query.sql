@@ -1,9 +1,12 @@
+-- Active: 1689296482357@@127.0.0.1@3306@employee_db
 USE employee_db;
 
 SELECT * FROM roles;
 /* JOIN DEPARTMENT AND ROLES */
 SELECT * FROM roles
-JOIN departments ON roles.department_id = departments.id;
+JOIN departments ON departments.id = roles.department_id;
+
+SELECT * FROM roles;
 /* JOIN EMPLOYEE W ROLES/DEPARTMENT SEEMINGLY */
 /* EMPLOYEE TABLE SHOWS:
     FIRST NAME
