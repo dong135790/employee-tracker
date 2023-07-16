@@ -1,13 +1,9 @@
-USE courses_db;
+USE employee_db;
 
-SELECT * FROM departments;
 SELECT * FROM roles;
-SELECT * FROM employees;
-
 /* JOIN DEPARTMENT AND ROLES */
-FROM departments
-JOIN roles ON roles.department_id = roles.id
-ORDER BY roles.id
+SELECT * FROM roles
+JOIN departments ON roles.department_id = departments.id;
 /* JOIN EMPLOYEE W ROLES/DEPARTMENT SEEMINGLY */
 /* EMPLOYEE TABLE SHOWS:
     FIRST NAME
