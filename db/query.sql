@@ -1,0 +1,18 @@
+USE courses_db;
+
+SELECT * FROM departments;
+SELECT * FROM roles;
+SELECT * FROM employees;
+
+/* JOIN DEPARTMENT AND ROLES */
+FROM departments
+JOIN roles ON roles.department_id = roles.id
+ORDER BY roles.id
+/* JOIN EMPLOYEE W ROLES/DEPARTMENT SEEMINGLY */
+/* EMPLOYEE TABLE SHOWS:
+    FIRST NAME
+    LAST NAME
+    JOB TITLE/NAME
+    DEPARTMENT
+    SALARY
+    MANAGER THAT EMPLOYEE REFER TO */

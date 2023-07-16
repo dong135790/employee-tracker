@@ -10,11 +10,46 @@ let db;
 // Notice how there is repition in the switch/case. We can input the tableName instead and shorten the code.
 const getTable = (tableName) => {
     // IMPORTANT ===> ?? instead of ? ===> due to string parameter we are inputing
-    db.query('SELECT * FROM ??', tableName, (err, data) => {
-        console.table(data);
+    db.query('SELECT * FROM ??', tableName, (err, result) => {
+        if (err) {
+            return console.error(err);
+        }
+        console.table(result);
+        init();
+    });
+};
+
+// For entering employee
+const insertEmployee = (data) => {
+    db.query('INSERT INTO employees SET ?', data , (err, result) => {
+        if (err) {
+            return console.error(err);
+        }
+        console.log('Added Employee');
+        console.log(result)
         init();
     })
 }
+
+const insertDepartment = (data) => {
+    db.query('INSERT INTO departments SET ?', data, (err, result) => {
+        if (err) {
+            return console.error(err);
+        }
+        console.log('Added ______ to the database')
+        init();
+    })
+}
+const insertRole = (data) => {
+    db.query('INSERT INTO roles SET ?', data, (err, result) => {
+        if (err) {
+            return console.error(err);
+        }
+        console.log('Added ______ to roles')
+        init();
+    })
+}
+
 
 const handleAction = ({ action }) => {
     console.log(`Action: ${action}`);
@@ -23,6 +58,9 @@ const handleAction = ({ action }) => {
         case 'View All Employees': {
             getTable('employees');
             // db.query('SELECT * FROM employees', (err, employees) => {
+                // if (err) {
+                //     return console.error(err);
+                // }
             //     console.table(employees);
             //     init();
             // });
@@ -31,6 +69,9 @@ const handleAction = ({ action }) => {
         case 'View All Departments': {
             getTable('departments');
             // db.query('SELECT * FROM departments', (err, departments) => {
+                // if (err) {
+                //     return console.error(err);
+                // }
             //     console.table(departments);
             //     init();
             // });
@@ -39,9 +80,48 @@ const handleAction = ({ action }) => {
         case 'View All Roles': {
             getTable('roles');
             // db.query('SELECT * FROM roles', (err, roles) => {
+                // if (err) {
+                //     return console.error(err);
+                // }
             //     console.table(roles);
             //     init();
             // });
+            break;
+        }
+        case 'Add Employee': {
+            prompt([
+                {
+                    name: 'first_name',
+                    message: 'Enter your first name:'
+                },
+                {
+                    name: 'last_name',
+                    message: 'Enter your last name:'
+                },
+            ]).then(insertEmployee);
+            // Need breaks or you wont be able to interact with prompt inputs.
+            break;
+        }
+        case 'Add Department': {
+            prompt([
+                {
+                    name: 'name',
+                    message: 'What is the name of the department?'
+                },
+            ]).then(insertDepartment)
+            break;
+        }
+        case 'Add Role': {
+            prompt([
+                {
+                    name: 'title',
+                    message: 'What is the name/title of the role?'
+                },
+                {
+                    name: 'salary',
+                    message: 'What is the salary of the role? (Please enter numbers only (no commas))'
+                },
+            ]).then(insertRole)
             break;
         }
         // Add a way to get out of init()/prompt system or it will keep asking you questions.
@@ -57,9 +137,13 @@ const init = () => {
         type: 'rawlist',
         name: 'action',
         choices: [
-            'View All Employees',
             'View All Departments',
             'View All Roles',
+            'View All Employees',
+            'Add Department',
+            'Add Role',
+            'Add Employee',
+            'Update Employee Role',
             // Must add for default to work.
             'Exit'
         ]
