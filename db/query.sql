@@ -14,7 +14,3 @@ ON roles.id = employees.role_id
 JOIN departments 
 ON departments.id = employees.role_id;
 
-SELECT title, name AS department, salary FROM roles
-JOIN departments ON departments.id = roles.department_id;
-SELECT title, salary FROM roles WHERE name = Finance
-JOIN departments ON departments.id = roles.department_id;
