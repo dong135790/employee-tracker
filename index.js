@@ -19,6 +19,24 @@ const getTable = (tableName) => {
     });
 };
 
+const employeeTable = (tableName) => {
+    db.query('SELECT employees.id, first_name, last_name, title, name AS department, salary, manager_id FROM ?? JOIN roles ON roles.id = employees.role_id JOIN departments ON departments.id = employees.role_id',tableName, (err, result) => {
+        if (err) {
+            return console.error(err);
+        }
+        console.table(result);
+        init();
+    });
+}
+const roleTable = (tableName) => {
+    db.query('SELECT roles.id, title, name AS department, salary FROM ?? JOIN departments ON departments.id = roles.department_id',tableName, (err, result) => {
+        if (err) {
+            return console.error(err);
+        }
+        console.table(result);
+        init();
+    });
+}
 // For entering employee
 const insertEmployee = (data) => {
     db.query('INSERT INTO employees SET ?', data , (err, result) => {
@@ -26,7 +44,6 @@ const insertEmployee = (data) => {
             return console.error(err);
         }
         console.log('Added Employee');
-        console.log(result)
         init();
     })
 }
@@ -50,9 +67,19 @@ const insertRole = (data) => {
         init();
     })
 }
-const updateEmployee = (data) => {
-    // add sql in here
-    db.query('', data, (err, result) => {
+// const updateEmployee = (data) => {
+//     // add sql in here
+//     db.query('', data, (err, result) => {
+//         if (err) {
+//             return console.error(err);
+//         }
+//         console.log('Added Selected Employee to the Database!');
+//         init();
+//     })
+// }
+
+const getTotal = (data) => {
+    db.query('SELECT departments, salary, SUM(salary) AS total_salary FROM roles WHERE department = ??', data, (err, result) => {
         if (err) {
             return console.error(err);
         }
@@ -66,14 +93,7 @@ const handleAction = ({ action }) => {
     //   if or switch case
     switch(action) {
         case 'View All Employees': {
-            getTable('employees');
-            // db.query('SELECT * FROM employees', (err, employees) => {
-                // if (err) {
-                //     return console.error(err);
-                // }
-            //     console.table(employees);
-            //     init();
-            // });
+            employeeTable('employees');
             break;
         }
         case 'View All Departments': {
@@ -82,7 +102,7 @@ const handleAction = ({ action }) => {
             break;
         }
         case 'View All Roles': {
-            getTable('roles');
+            roleTable('roles');
             break;
         }
         case 'Add Employee': {
@@ -95,16 +115,16 @@ const handleAction = ({ action }) => {
                     name: 'last_name',
                     message: 'Enter your last name:'
                 },
-                {
-                    name: 'role_id',
-                    message: 'What is the employee role?',
-                    // TODO
-                },
-                {
-                    name: 'manager_id',
-                    message: 'Who is the employees manager?',
-                    // TODO
-                },
+                // {
+                //     name: 'role_id',
+                //     message: 'What is the employee role?',
+                //     // TODO
+                // },
+                // {
+                //     name: 'manager_id',
+                //     message: 'Who is the employees manager?',
+                //     // TODO
+                // },
             ]).then(insertEmployee);
             break;
         }
@@ -127,10 +147,61 @@ const handleAction = ({ action }) => {
                     name: 'salary',
                     message: 'What is the salary of the role? (Please enter numbers only (no commas))'
                 },
+                // {
+                //     name: 'department_id',
+                //     message: 'Which department does the role belong to?',
+                //     // Add it into the sql
+                //     type: 'number',
+                //     choices: [
+                //         1,
+                //         2,
+                //         3,
+                //         4,
+                //         5,
+                //         6
+                //         // 'Service',
+                //         // 'Sales',
+                //         // 'Engineering',
+                //         // 'Finance',
+                //         // 'Legal',
+                //         // 'Other'
+                //     ]
+                // }
+            ]).then(insertRole);
+            break;
+        }
+        case 'Update Employee Role': {
+            prompt([
                 {
-                    name: 'department_id',
-                    message: 'Which department does the role belong to?',
-                    // 
+                    name: 'update',
+                    message: 'Which employees role do you want to update?',
+                    // How to select data from the database with prompt systems.
+                    // TODO add the names of the employees that you wish to update. ('SELECT first_name, last_name FROM employees')
+                    choices: [
+                        
+                    ]
+                },
+                {
+                    name: 'assign',
+                    message: 'Which role do you want to assign the selected employee?',
+                    choices: [
+                        'Sales Lead',
+                        'Lead Engineer',
+                        'Software Engineer',
+                        'Account Manager',
+                        'Accountant',
+                        'Legal Team Lead'
+                    ]
+                }
+                // TODO function
+            ]).then(updateEmployee);
+            break;
+        }
+        case 'View total budget of department': {
+            prompt([
+                {
+                    name: 'total',
+                    message: 'Which department would you like to view?',
                     choices: [
                         'Service',
                         'Sales',
@@ -140,20 +211,8 @@ const handleAction = ({ action }) => {
                         'Other'
                     ]
                 }
-            ]).then(insertRole);
+            ]).then(getTotal);
             break;
-        }
-        case 'Update Employee Role': {
-            prompt([
-                {
-                    name: 'update',
-                    message: 'Which employees role do you want to update?',
-                    // TODO add the names of the employees that you wish to update
-                    choices: [
-                        
-                    ]
-                }
-            ]).then(updateEmployee);
         }
         // Add a way to get out of init()/prompt system or it will keep asking you questions.
         default: {
@@ -175,6 +234,7 @@ const init = () => {
             'Add Role',
             'Add Employee',
             'Update Employee Role',
+            'View total budget of department',
             // Must add for default to work.
             'Exit'
         ]
