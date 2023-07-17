@@ -21,6 +21,8 @@ The following application  requires  Node.js , Inquirer, and MySQL
 ## Usage
 To begin the application, users must input 'npm install' on the CLI. Ensure inquirer and mySQL are both properly installed and up to date. Next, load the SQL database with 'source "path of file"'  on all three SQL files. The user will then exit the SQL CLI with 'exit' and type ' node index.js ' to begin the application.
 
+https://drive.google.com/file/d/1pe4sgzWVVgpH0Jzwi9hFMzr0Af-6D8uD/view <br>
+[Demo Video Tutorial](assets/Demo_video.webm)
 ## License
 None
 

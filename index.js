@@ -69,7 +69,7 @@ const insertRole = (data) => {
 }
 // const updateEmployee = (data) => {
 //     // add sql in here
-//     db.query('', data, (err, result) => {
+//     db.query('SELECT FROM ', data, (err, result) => {
 //         if (err) {
 //             return console.error(err);
 //         }
@@ -214,8 +214,8 @@ const handleAction = ({ action }) => {
             ]).then(getTotal);
             break;
         }
-        // Add a way to get out of init()/prompt system or it will keep asking you questions.
         default: {
+            // Add a way to get out of init()/prompt system or it will keep asking you questions.
             process.exit();
         };
     };
